@@ -11,14 +11,15 @@
                     "Authentication"
                 ],
                 "summary": "Login to user account",
-                "operationId": "accountValidate",
+                "operationId": "loginUser",
                 "parameters": [
                     {
                         "name": "mobile",
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "pattern": "^0[0-9]{10}$"
                         }
                     },
                     {
@@ -26,7 +27,8 @@
                         "in": "query",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "minimum": 8
                         }
                     }
                 ],
@@ -60,6 +62,180 @@
                     },
                     "401": {
                         "description": "password or mobile is wrong"
+                    }
+                }
+            }
+        },
+        "/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "register new user",
+                "operationId": "registerUser",
+                "parameters": [
+                    {
+                        "name": "firstName",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 30
+                        }
+                    },
+                    {
+                        "name": "lastName",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "maximum": 30
+                        }
+                    },
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^0[0-9]{10}$"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "minimum": 8
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "mobileVerify": {
+                                            "type": "boolean"
+                                        },
+                                        "api_token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/mobileVerification": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Mobile verification using SMS verification code",
+                "operationId": "mobileVerification",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^0[0-9]{10}$"
+                        }
+                    },
+                    {
+                        "name": "code",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^[0-9]{4}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "mobileVerify": {
+                                            "type": "boolean"
+                                        },
+                                        "api_token": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "wrong verification code"
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/newVerificationCode": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "send a new verification code after 2 minutes after the last verification code sent",
+                "operationId": "newVerificationCode",
+                "parameters": [
+                    {
+                        "name": "mobile",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "pattern": "^0[0-9]{10}$"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success and sent new sms verification code "
+                    },
+                    "403": {
+                        "description": "You will receive this response when you request again less than 2 minutes after the last request"
+                    },
+                    "422": {
+                        "description": "validation errors"
                     }
                 }
             }
@@ -625,6 +801,47 @@
                     },
                     "422": {
                         "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "tags": [
+                    "User"
+                ],
+                "summary": "get users",
+                "operationId": "getUsers",
+                "responses": {
+                    "200": {
+                        "description": "success,return array of users",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "firstName": {
+                                            "type": "string"
+                                        },
+                                        "lastName": {
+                                            "type": "string"
+                                        },
+                                        "mobile": {
+                                            "type": "string"
+                                        },
+                                        "mobileVerify": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
                     }
                 }
             }

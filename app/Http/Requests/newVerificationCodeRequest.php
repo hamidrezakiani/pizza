@@ -8,7 +8,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Validation\ValidationException;
 
-class RegisterRequest extends FormRequest
+class newVerificationCodeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -33,7 +33,6 @@ class RegisterRequest extends FormRequest
     {
         return [
             'mobile' => 'required|regex:/(0)[0-9]{10}/',
-            'password'   => 'required|string|min:8'
         ];
     }
 
@@ -41,7 +40,6 @@ class RegisterRequest extends FormRequest
     {
         return [
             'mobile' => 'شماره موبایل',
-            'password' => 'کلمه عبور',
         ];
     }
 
@@ -50,9 +48,6 @@ class RegisterRequest extends FormRequest
         return [
             'required' => ':attribute ضروری میباشد.',
             'regex' => 'فرمت :attribute معتبر نیست',
-            'min' => [
-                'string' => ':attribute باید بیشتر از :min کاراکتر باشد',
-            ],
         ];
     }
 
@@ -61,7 +56,7 @@ class RegisterRequest extends FormRequest
         $response = new JsonResponse([
             'data' => [],
             'errors' => $validator->errors(),
-        ], 422);
+        ],422);
         throw new ValidationException($validator, $response);
     }
 }

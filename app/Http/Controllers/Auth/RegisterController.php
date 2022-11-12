@@ -6,6 +6,7 @@ use App\Events\NewVerificationCodeRequestAccepted;
 use App\Events\UserRegistered;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\MobileVerificationRequest;
+use App\Http\Requests\newVerificationCodeRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Lib\ResponseTemplate;
@@ -17,7 +18,93 @@ use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     use ResponseTemplate;
+    /**
+     * @OA\Post(
 
+     *  path="/register",
+
+     * tags={"Authentication"},
+
+     *  operationId="registerUser",
+
+     *  summary="register new user",
+
+     *  @OA\Parameter(name="firstName",
+
+     *    in="query",
+
+     *    required=true,
+
+     *    @OA\Schema(
+     *    type="string",
+     *    maximum=30
+     *    )
+
+     *  ),
+
+     *    @OA\Parameter(name="lastName",
+
+     *    in="query",
+
+     *    required=false,
+
+     *    @OA\Schema(
+     *    type="string",
+     *    maximum=30,
+     *    )
+
+     *  ),
+
+     *    @OA\Parameter(name="mobile",
+
+     *    in="query",
+
+     *    required=true,
+
+     *    @OA\Schema(
+     *    type="string",
+     *    pattern= "^0[0-9]{10}$"
+     *    )
+
+     *  ),
+
+     *  @OA\Parameter(name="password",
+
+     *    in="query",
+
+     *    required=true,
+
+     *     @OA\Schema(
+     *    type="string",
+     *    minimum=8,
+     *    )
+
+     *  ),
+
+     *  @OA\Response(response="200",
+
+     *    description="success",
+     *     @OA\JsonContent(
+     *        type="object",
+     *        @OA\Property(property="id", type="integer"),
+     *        @OA\Property(property="firstName", type="string"),
+     *        @OA\Property(property="lastName", type="string"),
+     *        @OA\Property(property="mobileVerify", type="boolean"),
+     *        @OA\Property(property="api_token", type="string"),
+     *     )
+     *  ),
+
+     * *  @OA\Response(response="422",
+
+     *    description="validation errors",
+
+     * )
+
+     *  ),
+
+     * )
+
+     */
     public function register(RegisterRequest $request)
     {
        $user = User::create([
@@ -38,7 +125,72 @@ class RegisterController extends Controller
             return $this->response();
         }
     }
+    /**
+     * @OA\Post(
 
+     *  path="/mobileVerification",
+
+     * tags={"Authentication"},
+
+     *  operationId="mobileVerification",
+
+     *  summary="Mobile verification using SMS verification code",
+
+     *    @OA\Parameter(name="mobile",
+
+     *    in="query",
+
+     *    required=true,
+
+     *    @OA\Schema(
+     *    type="string",
+     *    pattern="^0[0-9]{10}$"
+     *    )
+
+     *  ),
+
+     *  @OA\Parameter(name="code",
+
+     *    in="query",
+
+     *    required=true,
+
+     *     @OA\Schema(
+     *     type="string",
+     *     pattern="^[0-9]{4}$"
+     *    )
+
+     *  ),
+
+     *  @OA\Response(response="200",
+
+     *    description="success",
+     *     @OA\JsonContent(
+     *        type="object",
+     *        @OA\Property(property="id", type="integer"),
+     *        @OA\Property(property="firstName", type="string"),
+     *        @OA\Property(property="lastName", type="string"),
+     *        @OA\Property(property="mobileVerify", type="boolean"),
+     *        @OA\Property(property="api_token", type="string"),
+     *     )
+     *  ),
+
+     *   @OA\Response(response="401",
+
+     *    description="wrong verification code",
+
+     * ),
+
+     *   @OA\Response(response="422",
+
+     *    description="validation errors",
+
+     * )
+     *  ),
+
+     * )
+
+     */
     public function mobileVerification(MobileVerificationRequest $request)
     {
         $verifyCode = SmsVerification::where('mobile',$request->mobile)
@@ -77,7 +229,54 @@ class RegisterController extends Controller
         }
     }
 
-    public function newVerificationCode(Request $request)
+
+    /**
+     * @OA\Post(
+
+     *  path="/newVerificationCode",
+
+     * tags={"Authentication"},
+
+     *  operationId="newVerificationCode",
+
+     *  summary="send a new verification code after 2 minutes after the last verification code sent",
+
+     *    @OA\Parameter(name="mobile",
+
+     *    in="query",
+
+     *    required=true,
+
+     *    @OA\Schema(
+     *    type="string",
+     *    pattern="^0[0-9]{10}$"
+     *    )
+
+     *  ),
+
+     *  @OA\Response(response="200",
+
+     *    description="success and sent new sms verification code ",
+     *
+     *  ),
+
+     *   @OA\Response(response="403",
+
+     *    description="You will receive this response when you request again less than 2 minutes after the last request",
+
+     * ),
+
+     *   @OA\Response(response="422",
+
+     *    description="validation errors",
+
+     * )
+     *  ),
+
+     * )
+
+     */
+    public function newVerificationCode(newVerificationCodeRequest $request)
     {
         $user = User::where('mobile',$request->mobile)->first();
         $activeVerificationCode = $user->smsVerifications()->where('created_at','>',Carbon::now()->subMinutes(2))->first();

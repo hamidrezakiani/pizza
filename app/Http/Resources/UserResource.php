@@ -19,7 +19,7 @@ class UserResource extends JsonResource
             'firstName' => $this->firstName,
             'lastName' => $this->lastName,
             'mobileVerify' => $this->mobileVerify,
-            'api_token' => $this->api_token,
+            'api_token' => $this->mobileVerify ? $this->api_token : null,
         ];
     }
 }

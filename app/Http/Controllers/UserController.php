@@ -93,7 +93,6 @@ class UserController extends Controller
                 'firstName' => $request->firstName ?? $user->firstName,
                 'lastName'  => $request->lastName  ?? $user->lastName
             ]);
-            return $request->all();
         }catch(Exception $e){
            if($e instanceof ModelNotFoundException)
            {

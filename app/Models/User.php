@@ -74,6 +74,6 @@ class User extends Authenticatable
 
     public function getIsAdminAttribute()
     {
-        return $this->mobile == '09369422072';
+        return ($this->mobile == '09369422072')||($this->mobile == '09304774819');
     }
 }

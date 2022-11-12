@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -18,7 +19,7 @@ class LoginController extends Controller
 
      * tags={"Authentication"},
 
-     *  operationId="accountValidate",
+     *  operationId="loginUser",
 
      *  summary="Login to user account",
 
@@ -28,7 +29,10 @@ class LoginController extends Controller
 
      *    required=true,
 
-     *    @OA\Schema(type="string")
+     *    @OA\Schema(
+     *    type="string",
+     *    pattern= "^0[0-9]{10}$"
+     *    )
 
      *  ),
 
@@ -38,7 +42,10 @@ class LoginController extends Controller
 
      *    required=true,
 
-     *    @OA\Schema(type="string")
+     *    @OA\Schema(
+     *    type="string",
+     *    minimum=8,
+     *    )
 
      *  ),
 
@@ -66,7 +73,7 @@ class LoginController extends Controller
      * )
 
      */
-    public function authenticate(Request $request)
+    public function authenticate(LoginRequest $request)
     {
         $credentials = $request->validate([
             'mobile' => ['required', 'regex:/(0)[0-9]{10}/'],
