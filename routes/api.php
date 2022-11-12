@@ -2,6 +2,11 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\RoleActionController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserRoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,3 +29,16 @@ Route::post('login',[LoginController::class, 'authenticate']);
 Route::post('register',[RegisterController::class, 'register']);
 Route::post('mobileVerification',[RegisterController::class, 'mobileVerification']);
 Route::post('newVerificationCode',[RegisterController::class, 'newVerificationCode']);
+
+Route::group(['middleware' => 'auth:api'],function(){
+   Route::resource('categories', CategoryController::class);
+   Route::resource('users',UserController::class);
+   Route::resource('roles',RoleController::class);
+   Route::post('userAttachRole',[UserRoleController::class,'attach']);
+   Route::post('userDetachRole',[UserRoleController::class,'detach']);
+   Route::get('userRoles',[UserRoleController::class,'index']);
+   Route::post('roleAttachAction',[RoleActionController::class,'attach']);
+   Route::post('roleDetachAction',[RoleActionController::class,'detach']);
+   Route::get('roleActions',[RoleActionController::class,'index']);
+});
+

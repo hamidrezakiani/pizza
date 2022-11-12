@@ -73,7 +73,7 @@ class LoginController extends Controller
             'password' => ['required'],
         ]);
 
-        if(Auth::attempt($credentials))
+        if(auth('web')->attempt($credentials))
             $this->setData(new UserResource(User::where('mobile',$request->mobile)->first()));
         else{
             $this->setStatus(401);

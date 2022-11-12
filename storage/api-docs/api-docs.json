@@ -63,6 +63,691 @@
                     }
                 }
             }
+        },
+        "/categories": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "get categories",
+                "operationId": "getCategories",
+                "parameters": [
+                    {
+                        "name": "flag",
+                        "in": "query",
+                        "description": "flag <b>all</b> for get all categories. flag <b>active</b> for get active categories.",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "default": "all",
+                            "enum": [
+                                "all",
+                                "active"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return array of category objects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "store a category",
+                "operationId": "bb02f0320882db37f99574196577e446",
+                "parameters": [
+                    {
+                        "name": "Authorization",
+                        "in": "header",
+                        "description": "bearer token example : 'bearer skfjhskfhksfhkshfkshfkshfkshfkshfse636525xv3535353'",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "add this parameter if you want to create a subcategory, otherwise it is not required",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "default": null
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "category name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Whether a category is active or not This parameter is 1 by default",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": 1,
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return object of category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/categories/{category_id}": {
+            "get": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "get a category by id",
+                "operationId": "6902bc43ff20ab7e8c1aaf52393f8471",
+                "responses": {
+                    "200": {
+                        "description": "success,return object of category",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "update a category",
+                "operationId": "bced945083786a603f6771ff13dc938c",
+                "parameters": [
+                    {
+                        "name": "parent_id",
+                        "in": "query",
+                        "description": "if you want to change category parent add this parameter, otherwise it is not required",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "if you want to change category name add this parameter, otherwise it is not required",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "if you want to change category active column add this parameter, otherwise it is not required",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean",
+                            "default": 1,
+                            "enum": [
+                                0,
+                                1
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "parent_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Category"
+                ],
+                "summary": "delete a category",
+                "operationId": "20febd49287a35c8450e7cb36b2fb2e8",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/roleActions": {
+            "get": {
+                "tags": [
+                    "RoleAction"
+                ],
+                "summary": "get all role's actions",
+                "operationId": "e39d95c1ebc122b9e253ce0eb1f6e64d",
+                "parameters": [
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return array of action objects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/roleAttachAction": {
+            "post": {
+                "tags": [
+                    "RoleAction"
+                ],
+                "summary": "attach a action to role",
+                "operationId": "bd49ccf79d99d0dee1df4ee9f2342102",
+                "parameters": [
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "action_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/roleDetachAction": {
+            "post": {
+                "tags": [
+                    "RoleAction"
+                ],
+                "summary": "detach a action of role",
+                "operationId": "ae0a7692d1cb9bfed2f334583ef2b527",
+                "parameters": [
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "action_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/roles": {
+            "get": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "get roles",
+                "operationId": "getRoles",
+                "responses": {
+                    "200": {
+                        "description": "success,return array of roles",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "store a role",
+                "operationId": "b47f38c8385567ad7a473d82fb6ebf63",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "role name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Whether a role is active or not",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return object of role",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/roles/{role_id}": {
+            "get": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "get a role by id",
+                "operationId": "4dbe05b743da86873c230cb8f8bd2bc7",
+                "responses": {
+                    "200": {
+                        "description": "success,return object of role",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "update a role",
+                "operationId": "f5dec4618fb663a4e726bbb87db517be",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "role name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Whether a role is active or not",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Role"
+                ],
+                "summary": "delete a role",
+                "operationId": "bffe2b04e26262a7c957f15a691ccdcd",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/userRoles": {
+            "get": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "get all user's roles",
+                "operationId": "9e04def149814393febd1a5d0ffd80c9",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return array of role objects",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "active": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/userAttachRole": {
+            "post": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "attach a role to user",
+                "operationId": "965490f03afdc64121ba35c574f58625",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/userDetachRole": {
+            "post": {
+                "tags": [
+                    "UserRole"
+                ],
+                "summary": "detach a role of user",
+                "operationId": "34950eff818c29803ae591f72b93ebfe",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "role_id",
+                        "in": "query",
+                        "description": "",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
         }
     }
 }
