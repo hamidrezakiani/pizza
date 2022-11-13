@@ -34,7 +34,7 @@ class SendVerificationSms
             'mobile' => $user->mobile,
             'code' => $code,
         ]);
-
+        dd(4);
         $send = Smsir::Send();
         $parameter = new \Cryptommer\Smsir\Objects\Parameters('Code', $code);
         $parameters = array($parameter);
