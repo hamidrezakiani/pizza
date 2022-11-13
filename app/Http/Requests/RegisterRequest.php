@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Lib\ResponseTemplate;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
@@ -10,6 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class RegisterRequest extends FormRequest
 {
+    use ResponseTemplate;
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -59,10 +61,8 @@ class RegisterRequest extends FormRequest
 
     protected function failedValidation(Validator $validator)
     {
-        $response = new JsonResponse([
-            'data' => [],
-            'errors' => $validator->errors(),
-        ], 422);
-        throw new ValidationException($validator, $response);
+        $this->setStatus(422);
+        $this->setErrors($validator->errors());
+        throw new ValidationException($validator, $this->response());
     }
 }
