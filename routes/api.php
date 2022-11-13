@@ -8,6 +8,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -40,5 +41,9 @@ Route::group(['middleware' => 'auth:api'],function(){
    Route::post('roleAttachAction',[RoleActionController::class,'attach']);
    Route::post('roleDetachAction',[RoleActionController::class,'detach']);
    Route::get('roleActions',[RoleActionController::class,'index']);
+});
+
+Route::get('artisan',function(){
+    Artisan::call('cache:clear');
 });
 
