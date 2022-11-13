@@ -32,8 +32,8 @@ class RegisterRequest extends FormRequest
     public function rules()
     {
         return [
-            'mobile' => 'required|regex:/(0)[0-9]{10}/',
-            'password'   => 'required|string|min:8'
+            'mobile' => 'required|regex:/(0)[0-9]{10}/|unique:users,mobile',
+            'password'   => 'required|string|min:8',
         ];
     }
 
