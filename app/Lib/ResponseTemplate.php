@@ -25,6 +25,6 @@ trait ResponseTemplate
 
     public function response()
     {
-        return response()->json(['data' => $this->data,'errors' => $this->errors],$this->status);
+        return response()->json(['data' => $this->data,'status' => ['code' => $this->status,'title' => 'TEST'],'errors' => $this->errors],$this->status);
     }
 }
