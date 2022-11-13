@@ -53,6 +53,7 @@ class RegisterRequest extends FormRequest
             'min' => [
                 'string' => ':attribute باید بیشتر از :min کاراکتر باشد',
             ],
+            'unique' => 'این :attribute قبلا استفاده شده',
         ];
     }
 
