@@ -2,13 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Gate;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateCategoryRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -17,12 +13,7 @@ class UpdateCategoryRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
-    }
-
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException('.شما مجوز دسترسی به این عمل را ندارید');
+        return Gate::allows('create-category');
     }
 
     /**
@@ -46,28 +37,5 @@ class UpdateCategoryRequest extends FormRequest
             'name'       => 'نام دسته',
             'active'     => 'وضعیت(فعال/غیر فعال)',
         ];
-    }
-
-    public function messages()
-    {
-        return [
-            'integer' => 'مقدار :attribute باید عددی باشد',
-            'exists' => ':attribute انتخاب شده معتبر نیست',
-            'string' => ':attribute باید به صورت رشته باشد',
-            'min' => [
-                'string' => ':attribute نباید کم تر از :min کاراکتر باشد',
-            ],
-            'boolean' => ':attribute باید 0 یا 1 باشد',
-        ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $response = new JsonResponse([
-            'data' => [],
-            'errors' => $validator->errors(),
-        ], 422);
-
-        throw new ValidationException($validator, $response);
     }
 }

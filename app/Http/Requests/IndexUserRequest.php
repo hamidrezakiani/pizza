@@ -2,11 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Gate;
 
-class IndexUserRequest extends FormRequest
+class IndexUserRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -16,12 +14,6 @@ class IndexUserRequest extends FormRequest
     public function authorize()
     {
         return Gate::allows('index-user');
-    }
-
-
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException('.شما مجوز دسترسی به این عمل را ندارید');
     }
 
     /**

@@ -2,13 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Gate;
 
-class UserDetachRoleRequest extends FormRequest
+class UserDetachRoleRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,12 +14,6 @@ class UserDetachRoleRequest extends FormRequest
     public function authorize()
     {
         return Gate::allows('roles');
-    }
-
-
-    protected function failedAuthorization()
-    {
-        throw new AuthorizationException('.شما مجوز دسترسی به این عمل را ندارید');
     }
 
     /**
@@ -45,23 +35,5 @@ class UserDetachRoleRequest extends FormRequest
             'role_id' => 'نقش',
             'user_id' => 'کاربر',
         ];
-    }
-
-    public function messages()
-    {
-        return [
-            'required' => 'انتخاب :attribute ضروری است.',
-            'exists' => ':attribute انتخاب شده وجود ندارد.',
-        ];
-    }
-
-    protected function failedValidation(Validator $validator)
-    {
-        $response = new JsonResponse([
-            'data' => [],
-            'errors' =>  $validator->errors(),
-        ], 422);
-
-        throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Gate;
 
-class UpdateRoleRequest extends FormRequest
+class UpdateRoleRequest extends BaseRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,7 +13,7 @@ class UpdateRoleRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return Gate::allows('roles');
     }
 
     /**
@@ -24,7 +24,14 @@ class UpdateRoleRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'name' => 'required|unique:roles',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'name' => 'نام نقش',
         ];
     }
 }
