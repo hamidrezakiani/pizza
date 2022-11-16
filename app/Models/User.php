@@ -72,6 +72,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class, 'roles_users', 'user_id', 'role_id');
     }
 
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
     public function getIsAdminAttribute()
     {
         return ($this->mobile == '09369422072')||($this->mobile == '09304774819');

@@ -62,16 +62,7 @@ class BaseRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $this->setStatus(422);
-        $errors = [];
-        foreach ($validator->errors()->messages() as $key => $error) {
-            foreach ($error as $value) {
-                array_push($errors,[
-                  'key' => $key,
-                  'value' => $value,
-                ]);
-            }
-        }
-        $this->setErrors($errors);
+        $this->setErrors($validator->errors()->messages());
         throw new ValidationException($validator, $this->response());
     }
 

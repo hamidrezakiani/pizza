@@ -15,7 +15,16 @@ trait ResponseTemplate
 
     public function setErrors($errors)
     {
-        $this->errors = $errors;
+        $errorsArray = [];
+        foreach ($errors as $key => $error) {
+            foreach ($error as $value) {
+                array_push($errorsArray, [
+                    'key' => $key,
+                    'value' => $value,
+                ]);
+            }
+        }
+        $this->errors = $errorsArray;
     }
 
     public function setStatus($status)
