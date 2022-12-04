@@ -13,6 +13,7 @@ use App\Lib\ResponseTemplate;
 use App\Models\SmsVerification;
 use App\Models\User;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 
 class RegisterController extends Controller
@@ -204,6 +205,8 @@ class RegisterController extends Controller
             {
                $verifyCode->status = 'VERIFIED';
                $user = User::where('mobile',$request->mobile)->first();
+               $user->api_token = Str::random(80);
+               $user->save();
                $this->setData(new UserResource($user));
             }
             else
