@@ -206,6 +206,7 @@ class RegisterController extends Controller
                $verifyCode->status = 'VERIFIED';
                $user = User::where('mobile',$request->mobile)->first();
                $user->api_token = Str::random(80);
+               $user->mobileVerify = 1;
                $user->save();
                $this->setData(new UserResource($user));
             }
