@@ -2,13 +2,22 @@
 
 namespace App\Policies;
 
+use App\Lib\ResponseTemplate;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 
 class UserPolicy
 {
     use HandlesAuthorization;
+    use ResponseTemplate;
 
+    protected function deny($message = null, $code = null)
+    {
+        $this->setErrors($message);
+        $this->setStatus(406);
+        return $this->response();
+    }
     /**
      * Determine whether the user can view any models.
      *
@@ -52,7 +61,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->id === $model->id;
+       return $user->id === $model->id || Gate::allows('update-user');
     }
 
     /**

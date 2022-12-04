@@ -195,7 +195,7 @@ class RegisterController extends Controller
     {
         $verifyCode = SmsVerification::where('mobile',$request->mobile)
                     ->where('expired_at',null)
-                    ->where('status','NOT_USED')->first();
+                    ->where('status','NOT_USED')->orderBy('created_at','ASC')->first();
 
         if($verifyCode && $verifyCode->created_at->gt(Carbon::now()->subMinute(2)))
         {

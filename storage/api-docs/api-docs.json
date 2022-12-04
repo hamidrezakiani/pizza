@@ -497,6 +497,41 @@
                 }
             }
         },
+        "/products": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "get products",
+                "operationId": "getProducts",
+                "responses": {
+                    "200": {
+                        "description": "success,return array of products",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "exist": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
         "/roleActions": {
             "get": {
                 "tags": [

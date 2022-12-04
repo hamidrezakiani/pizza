@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
 class UpdateUserRequest extends BaseRequest
@@ -13,7 +15,9 @@ class UpdateUserRequest extends BaseRequest
      */
     public function authorize()
     {
-        return Gate::allows('update-user');
+        //$user_id = $this->route('user');
+        //return Gate::authorize('update', User::find($user_id));
+        return Gate::authorize('update-user');
     }
 
     /**

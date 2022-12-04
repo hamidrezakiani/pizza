@@ -5,11 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\IndexUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserCollection;
+use App\Http\Resources\UserResource;
 use App\Lib\ResponseTemplate;
 use App\Models\User;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class UserController extends Controller
 {
@@ -89,23 +91,26 @@ class UserController extends Controller
     {
         try{
             $user = User::findOrFail($id);
-            $user->update([
+            Gate::authorize('update', $user);
+            $user =  $user->update([
                 'firstName' => $request->firstName ?? $user->firstName,
                 'lastName'  => $request->lastName  ?? $user->lastName
             ]);
+
+            $this->setData(new UserResource(User::find($id)));
         }catch(Exception $e){
            if($e instanceof ModelNotFoundException)
            {
-             $this->setErrors(['message' => 'رکوردی یافت نشد.']);
+             $this->setErrors(['message' => ['رکوردی یافت نشد.']]);
              $this->setStatus(404);
            }
            else
            {
-              $this->setErrors(['message' => 'خطای سیستمی']);
+              $this->setErrors(['message' => ['خطای سیستمی']]);
               $this->setStatus(500);
            }
         }
-
+        return $this->response();
 
     }
 

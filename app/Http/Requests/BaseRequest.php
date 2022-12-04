@@ -35,7 +35,7 @@ class BaseRequest extends FormRequest
 
     protected function failedAuthorization()
     {
-        $this->setErrors(['message' => '.شما مجوز دسترسی به این عمل را ندارید']);
+        $this->setErrors(['message' => ['.شما مجوز دسترسی به این عمل را ندارید']]);
         $this->setStatus(403);
         throw new ValidationException(null, $this->response());
     }
