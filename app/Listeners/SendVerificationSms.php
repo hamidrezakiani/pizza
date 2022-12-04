@@ -30,7 +30,7 @@ class SendVerificationSms
     {
         $user =  $event->user;
         $code = rand(1000, 9999);
-        $user->smsVerifications()->where('status','NOT_USED')->update(['status','TILE_LEFT']);
+        $user->smsVerifications()->where('status','NOT_USED')->update(['status' => 'TILE_LEFT']);
         $user->smsVerifications()->create([
             'mobile' => $user->mobile,
             'code' => $code,
