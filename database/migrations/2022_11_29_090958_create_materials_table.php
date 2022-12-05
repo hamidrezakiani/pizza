@@ -18,7 +18,7 @@ class CreateMaterialsTable extends Migration
             $table->string('name');
             $table->string('unit');
             $table->unsignedBigInteger('price');
-            $table->boolean('exist')->default('true');
+            $table->boolean('exist')->default(1);
             $table->softDeletes();
             $table->timestamps();
         });

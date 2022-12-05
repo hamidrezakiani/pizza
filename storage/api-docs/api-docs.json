@@ -514,6 +514,9 @@
                                         "id": {
                                             "type": "integer"
                                         },
+                                        "category_id": {
+                                            "type": "integer"
+                                        },
                                         "name": {
                                             "type": "string"
                                         },
@@ -528,6 +531,191 @@
                     },
                     "422": {
                         "description": "validation errors"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "store a product",
+                "operationId": "399770d33fa4672f1216707d0e236763",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "product name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "select category for product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "exist",
+                        "in": "query",
+                        "description": "Whether a product is exist or not(true by default)",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return object of product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "category_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "exist": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/products/{product_id}": {
+            "get": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "get a product by id",
+                "operationId": "961e807344c87d10445361e18e410449",
+                "responses": {
+                    "200": {
+                        "description": "success,return object of seasoning",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "category_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "exist": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "update a product",
+                "operationId": "838f709761f5a519b578a44fc0251b81",
+                "parameters": [
+                    {
+                        "name": "category_id",
+                        "in": "query",
+                        "description": "category id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "role name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "exist",
+                        "in": "query",
+                        "description": "Whether a role is active or not",
+                        "required": false,
+                        "schema": {
+                            "type": "boolean"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "category_id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        },
+                                        "exist": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/product/{product_id}": {
+            "delete": {
+                "tags": [
+                    "Product"
+                ],
+                "summary": "delete a product",
+                "operationId": "8375d0fb790ca8a448ccccdc5390eba7",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation error"
                     }
                 }
             }
@@ -830,6 +1018,201 @@
                 ],
                 "summary": "delete a role",
                 "operationId": "bffe2b04e26262a7c957f15a691ccdcd",
+                "responses": {
+                    "200": {
+                        "description": "success"
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/seasoning": {
+            "get": {
+                "tags": [
+                    "Seasoning"
+                ],
+                "summary": "get seasonings",
+                "operationId": "getSeasonings",
+                "responses": {
+                    "200": {
+                        "description": "success,return array of seasonings",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "product_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/seasonings": {
+            "post": {
+                "tags": [
+                    "Seasoning"
+                ],
+                "summary": "store a seasoning",
+                "operationId": "f3d53ce19dcaea6d622625a0993f0921",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "product name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "select category for product",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success,return object of product",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "product_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            }
+        },
+        "/seasonings/{seasoning_id}": {
+            "get": {
+                "tags": [
+                    "Seasoning"
+                ],
+                "summary": "get a seasoning by id",
+                "operationId": "f37022213ff3aea49eeca8be5a56547a",
+                "responses": {
+                    "200": {
+                        "description": "success,return object of seasoning",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "product_id": {
+                                            "type": "integer"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation errors"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Seasoning"
+                ],
+                "summary": "update a seasoning",
+                "operationId": "8a633ce21bd8b73a28454013473d9706",
+                "parameters": [
+                    {
+                        "name": "product_id",
+                        "in": "query",
+                        "description": "product id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "role name",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer"
+                                        },
+                                        "product_id": {
+                                            "type": "string"
+                                        },
+                                        "name": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "validation error"
+                    }
+                }
+            }
+        },
+        "/seasoning/{seasoning_id}": {
+            "delete": {
+                "tags": [
+                    "Seasoning"
+                ],
+                "summary": "delete a seasoning",
+                "operationId": "0c39653360a7b500bed463c25349242a",
                 "responses": {
                     "200": {
                         "description": "success"

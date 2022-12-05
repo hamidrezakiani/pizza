@@ -16,8 +16,9 @@ class MaterialsProducts extends Migration
         Schema::create('materials_products', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('material_id');
+            $table->unsignedBigInteger('product_id');
             $table->foreign('material_id')->references('id')->on('materials')->onDelete('cascade');
-            $table->foreign('products_id')->references('id')->on('products')->onDelete('cascade');
+            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
             $table->softDeletes();
             $table->timestamps();
         });

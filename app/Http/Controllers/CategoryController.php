@@ -78,7 +78,7 @@ class CategoryController extends Controller
         }
         $this->setData(new CategoryCollection($categories));
        }catch(Exception $e){
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
        }
        return $this->response();
@@ -182,7 +182,7 @@ class CategoryController extends Controller
 
             $this->setData($category);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 
@@ -227,7 +227,7 @@ class CategoryController extends Controller
             $category = Category::find($id);
             $this->setData($category);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 
@@ -317,7 +317,7 @@ class CategoryController extends Controller
             ]);
             $this->setData($category);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 
@@ -355,7 +355,7 @@ class CategoryController extends Controller
             $category = Category::find($id);
             $category->delete();
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 

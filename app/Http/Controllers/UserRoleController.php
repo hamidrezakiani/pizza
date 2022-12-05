@@ -66,7 +66,7 @@ class UserRoleController extends Controller
             $this->setData(new RoleCollection($roles));
         }catch(Exception $e)
         {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 
@@ -130,7 +130,7 @@ class UserRoleController extends Controller
             $user = User::find($request->user_id);
             $user->roles()->syncWithoutDetaching($request->role_id);
         }catch(Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
         return $this->response();
@@ -192,7 +192,7 @@ class UserRoleController extends Controller
             $user = User::find($request->user_id);
             $user->roles()->detach($request->role_id);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
         return $this->response();

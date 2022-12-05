@@ -2,42 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\DestroyProductRequest;
-use App\Http\Requests\IndexProductRequest;
-use App\Http\Requests\ShowProductRequest;
-use App\Http\Requests\StoreProductRequest;
-use App\Http\Resources\ProductCollection;
-use App\Http\Resources\ProductResource;
+use App\Http\Requests\DestroySeasoningRequest;
+use App\Http\Requests\IndexSeasoningRequest;
+use App\Http\Requests\ShowSeasoningRequest;
+use App\Http\Requests\StoreSeasoningRequest;
+use App\Http\Requests\UpdateSeasoningRequest;
+use App\Http\Resources\SeasoningCollection;
+use App\Http\Resources\SeasoningResource;
 use App\Lib\ResponseTemplate;
-use App\Models\Product;
 use App\Models\Seasoning;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 
-class ProductController extends Controller
+class SeasoningController extends Controller
 {
     use ResponseTemplate;
     /**
      * @OA\Get(
 
-     *  path="/products",
+     *  path="/seasoning",
 
-     * tags={"Product"},
+     * tags={"Seasoning"},
 
-     *  operationId="getProducts",
+     *  operationId="getSeasonings",
 
-     *  summary="get products",
+     *  summary="get seasonings",
 
      *  @OA\Response(response="200",
 
-     *    description="success,return array of products",
+     *    description="success,return array of seasonings",
      *     @OA\JsonContent(
      *        type="object",
      *        @OA\Property(property="id", type="integer"),
-     *        @OA\Property(property="category_id", type="integer"),
+     *        @OA\Property(property="product_id", type="integer"),
      *        @OA\Property(property="name", type="string"),
-     *        @OA\Property(property="exist", type="boolean"),
      *     )
      *  ),
 
@@ -52,11 +51,11 @@ class ProductController extends Controller
      * )
 
      */
-    public function index(IndexProductRequest $request)
+    public function index(IndexSeasoningRequest $request)
     {
         try {
-            $products = Product::all();
-            $this->setData(new ProductCollection($products));
+            $seasoning = Seasoning::where('product_id',$request->product_id)->get();
+            $this->setData(new SeasoningCollection($seasoning));
         } catch (Exception $e) {
             $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
@@ -67,11 +66,11 @@ class ProductController extends Controller
     /**
      * @OA\Post(
 
-     *  path="/products",
+     *  path="/seasonings",
 
-     * tags={"Product"},
+     * tags={"Seasoning"},
 
-     *  summary="store a product",
+     *  summary="store a seasoning",
 
      *  @OA\Parameter(name="name",
 
@@ -85,7 +84,7 @@ class ProductController extends Controller
 
      *  ),
 
-     *   @OA\Parameter(name="category_id",
+     *   @OA\Parameter(name="product_id",
 
      *    in="query",
 
@@ -97,27 +96,14 @@ class ProductController extends Controller
 
      *  ),
 
-     *  @OA\Parameter(name="exist",
-
-     *    in="query",
-
-     *    required=false,
-
-     *    description="Whether a product is exist or not(true by default)",
-
-     *    @OA\Schema(type="boolean")
-
-     *  ),
-
      *  @OA\Response(response="200",
 
      *    description="success,return object of product",
      *     @OA\JsonContent(
      *        type="object",
      *        @OA\Property(property="id", type="integer"),
-     *        @OA\Property(property="category_id", type="integer"),
+     *        @OA\Property(property="product_id", type="integer"),
      *        @OA\Property(property="name", type="string"),
-     *        @OA\Property(property="exist", type="boolean"),
      *     )
      *  ),
 
@@ -132,15 +118,15 @@ class ProductController extends Controller
      * )
 
      */
-    public function store(StoreProductRequest $request)
+    public function store(StoreSeasoningRequest $request)
     {
-        try
-        {
-            $product = Product::create(['name' => $request->name,
-                                     'category_id' => $request->category_id,
-                                     'exist'       => $request->exist ?? 1]);
-            $this->setData(new ProductResource($product));
-        }catch(Exception $e){
+        try {
+            $seasoning = Seasoning::create([
+                'name' => $request->name,
+                'product_id' => $request->product_id,
+            ]);
+            $this->setData(new SeasoningResource($seasoning));
+        } catch (Exception $e) {
             $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
@@ -150,11 +136,11 @@ class ProductController extends Controller
     /**
      * @OA\Get(
 
-     *  path="/products/{product_id}",
+     *  path="/seasonings/{seasoning_id}",
 
-     * tags={"Product"},
+     * tags={"Seasoning"},
 
-     *  summary="get a product by id",
+     *  summary="get a seasoning by id",
 
      *  @OA\Response(response="200",
 
@@ -162,9 +148,8 @@ class ProductController extends Controller
      *     @OA\JsonContent(
      *        type="object",
      *        @OA\Property(property="id", type="integer"),
-     *        @OA\Property(property="category_id", type="integer"),
-     *        @OA\Property(property="name", type="string"),
-     *        @OA\Property(property="exist", type="boolean"),
+     *        @OA\Property(property="product_id", type="integer"),
+     *        @OA\Property(property="name", type="string")
      *
      *     )
      *  ),
@@ -177,11 +162,11 @@ class ProductController extends Controller
 
      *  ),
      */
-    public function show(ShowProductRequest $request, $id)
+    public function show(ShowSeasoningRequest $request, $id)
     {
         try {
-            $role = Product::findOrFail($id);
-            $this->setData(new ProductResource($role));
+            $role = Seasoning::findOrFail($id);
+            $this->setData(new SeasoningResource($role));
         } catch (Exception $e) {
             if ($e instanceof ModelNotFoundException) {
                 $this->setErrors(['message' => ['رکوردی یافت نشد.']]);
@@ -198,19 +183,19 @@ class ProductController extends Controller
     /**
      * @OA\Put(
 
-     *  path="/products/{product_id}",
+     *  path="/seasonings/{seasoning_id}",
 
-     * tags={"Product"},
+     * tags={"Seasoning"},
 
-     *  summary="update a product",
+     *  summary="update a seasoning",
 
-     *  @OA\Parameter(name="category_id",
+     *  @OA\Parameter(name="product_id",
 
      *    in="query",
 
      *    required=true,
 
-     *    description="category id",
+     *    description="product id",
 
      *    @OA\Schema(type="integer")
 
@@ -228,27 +213,14 @@ class ProductController extends Controller
 
      *  ),
 
-     *  @OA\Parameter(name="exist",
-
-     *    in="query",
-
-     *    required=false,
-
-     *    description="Whether a role is active or not",
-
-     *    @OA\Schema(type="boolean")
-
-     *  ),
-
      *  @OA\Response(response="200",
 
      *    description="success",
      *     @OA\JsonContent(
      *        type="object",
      *        @OA\Property(property="id", type="integer"),
-     *        @OA\Property(property="category_id", type="string"),
+     *        @OA\Property(property="product_id", type="string"),
      *        @OA\Property(property="name", type="string"),
-     *        @OA\Property(property="exist", type="boolean"),
      *     )
      *  ),
 
@@ -263,16 +235,15 @@ class ProductController extends Controller
      * )
 
      */
-    public function update(Request $request, $id)
+    public function update(UpdateSeasoningRequest $request, $id)
     {
         try {
-            $product = Product::findOrFail($id);
-            $product->update([
-                'category_id' => $request->category_id ?? $product->category_id,
-                'name'      => $request->name ?? $product->name,
-                'exist'    => $request->exist ?? $product->exist,
+            $seasoning = Seasoning::findOrFail($id);
+            $seasoning->update([
+                'product_id' => $request->product_id ?? $$seasoning->product_id,
+                'name'      => $request->name ?? $seasoning->name,
             ]);
-            $this->setData(new ProductResource($product));
+            $this->setData(new SeasoningResource($seasoning));
         } catch (Exception $e) {
             if ($e instanceof ModelNotFoundException) {
                 $this->setErrors(['message' => ['رکوردی یافت نشد.']]);
@@ -289,11 +260,11 @@ class ProductController extends Controller
     /**
      * @OA\Delete(
 
-     *  path="/product/{product_id}",
+     *  path="/seasoning/{seasoning_id}",
 
-     * tags={"Product"},
+     * tags={"Seasoning"},
 
-     *  summary="delete a product",
+     *  summary="delete a seasoning",
 
      *  @OA\Response(response="200",
 
@@ -311,12 +282,11 @@ class ProductController extends Controller
      * )
 
      */
-    public function destroy(DestroyProductRequest $request, $id)
+    public function destroy(DestroySeasoningRequest $request, $id)
     {
         try {
-            $product = Product::findOrFail($id);
-            $product->seasonings()->delete();
-            $product->delete();
+            $seasoning = Seasoning::findOrFail($id);
+            $seasoning->delete();
         } catch (Exception $e) {
             if ($e instanceof ModelNotFoundException) {
                 $this->setErrors(['message' => ['چنین رکوردی وجود ندارد.']]);

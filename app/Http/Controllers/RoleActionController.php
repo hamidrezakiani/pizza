@@ -64,7 +64,7 @@ class RoleActionController extends Controller
             $actions = $role->actions;
             $this->setData(new ActionCollection($actions));
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
 
@@ -127,7 +127,7 @@ class RoleActionController extends Controller
             $role = Role::find($request->role_id);
             $role->actions()->syncWithoutDetaching($request->action_id);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
         return $this->response();
@@ -189,7 +189,7 @@ class RoleActionController extends Controller
             $role = Role::find($request->role_id);
             $role->actions()->detach($request->action_id);
         } catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
         return $this->response();

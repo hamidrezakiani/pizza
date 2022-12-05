@@ -3,8 +3,10 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleActionController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SeasoningController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserRoleController;
 use Illuminate\Http\Request;
@@ -41,6 +43,8 @@ Route::group(['middleware' => 'auth:api'],function(){
    Route::post('roleAttachAction',[RoleActionController::class,'attach']);
    Route::post('roleDetachAction',[RoleActionController::class,'detach']);
    Route::get('roleActions',[RoleActionController::class,'index']);
+   Route::resource('products',ProductController::class);
+   Route::resource('seasonings',SeasoningController::class);
 });
 
 Route::get('artisan',function(){

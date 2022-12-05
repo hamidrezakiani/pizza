@@ -59,7 +59,7 @@ class RoleController extends Controller
             $this->setData(new RoleCollection($roles));
 
         }catch (Exception $e) {
-            $this->setErrors(['message' => 'خطای سیستمی']);
+            $this->setErrors(['message' => ['خطای سیستمی']]);
             $this->setStatus(500);
         }
          return $this->response();
@@ -175,12 +175,12 @@ class RoleController extends Controller
         }catch(Exception $e){
            if($e instanceof ModelNotFoundException)
            {
-             $this->setErrors(['message' => 'رکوردی یافت نشد.']);
+             $this->setErrors(['message' => ['رکوردی یافت نشد.']]);
              $this->setStatus(404);
            }
            else
            {
-              $this->setErrors(['message' => 'خطای سیستمی']);
+              $this->setErrors(['message' => ['خطای سیستمی']]);
               $this->setStatus(500);
            }
         }
@@ -247,16 +247,16 @@ class RoleController extends Controller
     {
         try{
           $role = Role::findOrFail($id);
-          $request->name ?? $role->name = $request->name;
-          $request->active ?? $role->active = $request->active;
+          !$request->name ?? $role->name = $request->name;
+          !$request->active ?? $role->active = $request->active;
           $role->save();
           $this->setData(new RoleResource($role));
         } catch (Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                $this->setErrors(['message' => 'رکوردی یافت نشد.']);
+                $this->setErrors(['message' => ['رکوردی یافت نشد.']]);
                 $this->setStatus(404);
             } else {
-                $this->setErrors(['message' => 'خطای سیستمی']);
+                $this->setErrors(['message' => ['خطای سیستمی']]);
                 $this->setStatus(500);
             }
         }
@@ -297,10 +297,10 @@ class RoleController extends Controller
             $role->delete();
         } catch (Exception $e) {
             if ($e instanceof ModelNotFoundException) {
-                $this->setErrors(['message' => 'چنین رکوردی وجود ندارد.']);
+                $this->setErrors(['message' => ['چنین رکوردی وجود ندارد.']]);
                 $this->setStatus(404);
             } else {
-                $this->setErrors(['message' => 'خطای سیستمی']);
+                $this->setErrors(['message' => ['خطای سیستمی']]);
                 $this->setStatus(500);
             }
         }
